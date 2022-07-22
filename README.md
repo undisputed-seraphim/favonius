@@ -15,6 +15,13 @@ Master branch aims to be compatible only with the headers of the current LTS ver
 - Dynamic allocations are backed by statically allocated memory.
 - No exceptions are thrown.
 - Aims to be compatible with the certification requirements of IEC 61508.
+- Aims to be *mostly* `std` compatible.
+
+`std` compatibility is a best-effort basis and full compatibility is not a goal. Notably, as an embedded real-time OS, dynamic memory allocation is highly restricted; consequently, any `std` features that require dynamic memory allocation will be either missing or heavily altered. Same goes for exceptions.
+
+Some return types and function parameters may be slightly different. Users will have to check the return values of allocating functions to ensure that objects are properly constructed in containers. Functions that typically `throw` in standard C++ will return a value or nullptr instead.
+
+Additionally, the Zephyr public API exposes more functionality for some concepts than `std` offers (e.g. cpu pinning for threads). Those functions will also be available under the same constructs as `std`, but with a different capitalization style to indicate that those functions do not originate from `std`.
 
 ## Usage
 
@@ -23,10 +30,6 @@ Minimum compiler requirement is C++14.
 There are two namespaces:
 - `ztd`, which represents `std` compatible classes and functions, but are backed by functions provided by Zephyr OS.
 - `fav`, which represents all other constructs and primitives from the Zephyr OS that don't fit in `ztd`.
-
-`std` compatibility is a best-effort basis and full compatibility is not a goal. Notably, as an embedded real-time OS, dynamic memory allocation is highly restricted; consequently, any `std` features that require dynamic memory allocation will be either missing or heavily altered. Same goes for exceptions.
-
-Users still have to check the return values of 'allocating' functions to ensure that objects are properly constructed in containers.
 
 ## Development
 
